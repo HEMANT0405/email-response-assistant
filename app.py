@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 
 # ---- PAGE CONFIG ----
 st.set_page_config(
@@ -32,14 +32,16 @@ with st.form("email_form"):
     submit = st.form_submit_button("Generate Reply ✨")
 
 # ---- FUNCTION ----
-def generate_reply(subject, body, tone_style):
+def generate_reply(subject, body, tone_style, api_key):
+    client = OpenAI(api_key=api_key)
+
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
 Email Body: {body}
 
 Write a reply with a {tone_style} tone."""
-    
-    response = openai.ChatCompletion.create(
+
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You're a helpful assistant for email replies."},
@@ -48,7 +50,7 @@ Write a reply with a {tone_style} tone."""
         temperature=0.7,
         max_tokens=300
     )
-    return response["choices"][0]["message"]["content"]
+    return response.choices[0].message.content
 
 # ---- RESPONSE GENERATION ----
 if submit:
@@ -57,11 +59,10 @@ if submit:
     elif not subject or not body:
         st.warning("📭 Subject and body are required to generate a response.")
     else:
-        openai.api_key = api_key
         style = custom_tone if tone == "Custom" else tone
         with st.spinner("Generating reply... ⏳"):
             try:
-                reply = generate_reply(subject, body, style)
+                reply = generate_reply(subject, body, style, api_key)
                 st.success("✅ Response Generated")
                 st.markdown("### 📩 Suggested Reply:")
                 st.code(reply, language='markdown')
