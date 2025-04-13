@@ -33,7 +33,7 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
-    openai.api_key = "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"
+    openai.api_key = api_key  # Use the actual API key provided by the user
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
@@ -41,7 +41,7 @@ Email Body: {body}
 
 Write a reply with a {tone_style} tone."""
 
-    response = client.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You're a helpful assistant for email replies."},
@@ -50,7 +50,8 @@ Write a reply with a {tone_style} tone."""
         temperature=0.7,
         max_tokens=300
     )
-    return response.choices[0].message.content
+    return response.choices[0].message['content']
+
 
 # ---- RESPONSE GENERATION ----
 if submit:
