@@ -33,7 +33,7 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
-    openai.api_key = api_key  # Use the actual API key provided by the user
+    return f"📩 [Mock Reply] Tone: {tone_style}\n\nThank you for your message regarding '{subject}'. I'm working on it and will respond soon."
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
