@@ -56,14 +56,11 @@ Write a reply with a {tone_style} tone."""
     except Exception as e:
         # Log or print(e) if needed for debugging
         return """Hi,
-
 Thank you for reaching out. I understand that unexpected circumstances can arise, and I appreciate your transparency. I'm willing to grant a short extension for the project submission. Please submit the completed work within the next two days.
-
 Let me know if you encounter any further issues.
 
 Best regards,  
 [Your Name]"""
-
 
 # ---- RESPONSE GENERATION ----
 if submit:
