@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 # Use your API key
-client = OpenAI(api_key=api_key)
+client = OpenAI(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)
 
 # Then update your generate_reply function:
 def generate_reply(subject, body, tone_style):
