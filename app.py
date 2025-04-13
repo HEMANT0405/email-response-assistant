@@ -33,7 +33,8 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
-    return f"📩 [Mock Reply] Tone: {tone_style}\n\nThank you for your message regarding '{subject}'. I'm working on it and will respond soon."
+    import openai
+    openai.api_key = api_key
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
@@ -50,7 +51,7 @@ Write a reply with a {tone_style} tone."""
         temperature=0.7,
         max_tokens=300
     )
-    return response.choices[0].message['content']
+    return response.choices[0].message["content"]
 
 
 # ---- RESPONSE GENERATION ----
