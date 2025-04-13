@@ -33,6 +33,7 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
+    import google.generativeai as genai
     genai.configure(api_key=api_key)
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
@@ -42,7 +43,7 @@ Email Body: {body}
 Write a reply with a {tone_style} tone."""
 
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('models/gemini-pro')
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
