@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import OpenAI
 
 # ---- PAGE CONFIG ----
 st.set_page_config(
@@ -33,7 +33,7 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
-    client = OpenAI(api_key=api_key)
+    openai.api_key = api_key
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
