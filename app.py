@@ -1,31 +1,43 @@
-import openai
 import streamlit as st
+import openai
+import os
 
-# Set your OpenAI API key
-openai.api_key = "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"
+# Load your OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Or hardcode it temporarily for testing
 
-# Page title
 st.set_page_config(page_title="Email Response Assistant", page_icon="📧")
-st.title("📧 Email Response Assistant")
+st.title("📨 Email Response Assistant")
+st.write("Easily generate email replies using AI!")
 
-# Input fields
-email_input = st.text_area("✉️ Paste the email you received:")
-tone = st.selectbox("🎯 Choose response tone:", ["Formal", "Informal", "Friendly", "Professional"])
+# User input
+email_content = st.text_area("📩 Paste the received email here:", height=200)
 
-# Button to generate response
-if st.button("Generate Reply"):
-    if email_input.strip() == "":
-        st.warning("Please enter an email to generate a reply.")
+tone = st.selectbox(
+    "🎯 Choose the tone of your response:",
+    ["Formal", "Friendly", "Apologetic", "Enthusiastic", "Neutral"]
+)
+
+if st.button("✉️ Generate Response"):
+    if not email_content.strip():
+        st.warning("Please enter the email content.")
     else:
-        with st.spinner("Generating reply..."):
-            prompt = f"Write a {tone.lower()} reply to the following email:\n\n{email_input}"
+        with st.spinner("Generating your reply..."):
+            prompt = (
+                f"You are an AI email assistant. Write a {tone.lower()} email reply "
+                f"to the following message:\n\n\"{email_content}\""
+            )
+
             try:
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": prompt}]
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=300,
+                    temperature=0.7
                 )
-                reply = response.choices[0].message.content
-                st.subheader("📨 AI-Generated Reply:")
-                st.write(reply)
+
+                reply = response.choices[0].message["content"]
+                st.success("✅ Response Generated:")
+                st.text_area("📨 Suggested Reply:", reply, height=200)
+
             except Exception as e:
-                st.error(f"⚠️ Error: {e}")
+                st.error(f"Error: {e}")
