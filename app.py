@@ -33,7 +33,7 @@ with st.form("email_form"):
 
 # ---- FUNCTION ----
 def generate_reply(subject, body, tone_style, api_key):
-    openai.api_key = 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
+    openai.api_key = "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"
 
     prompt = f"""You are an AI assistant that crafts replies to emails.
 Email Subject: {subject}
